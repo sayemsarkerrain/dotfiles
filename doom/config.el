@@ -1,4 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(setq custom-file (expand-file-name "custom.el" doom-user-dir))
+(load custom-file 'noerror)
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -32,7 +34,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-spacegrey)
 (setq doom-font (font-spec :family "Ubuntu Mono" :size 14))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -42,57 +44,81 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
-(setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
 (setq org-id-locations-file (expand-file-name ".orgids" "~/.config/emacs/.local/etc/org/"))
+(setq org-element-use-cache nil)
 (map! :leader
       (:prefix ("o" . nil)
-       :desc "Org capture" "o" #'org-capture))
+       :desc "Org capture" "c" #'org-capture))
 (after! org
         (setq org-capture-templates
-              `(
-                ("n" "notes" entry
-                 (file+headline "~/org/inbox.org" "Notes")
-                 "* %U %?")
-                ("d" "ideas" plain
-                 (file+headline "~/org/inbox.org" "Ideas")
-                 "- *%U* %?")
-                ("t" "tasks" entry
+              '(
+                ("n" "notes" plain
+                 (file "~/org/notes.org")
+                 "%?")
+                ("t" "tasks" entr
                  (file "~/org/tasks.org")
                  "* TODO %?")
               )))
 
 (after! org
-        (setq org-agenda-files '("~/org/projects.org" "~/org/todos.org"))
+        (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
         (setq org-agenda-skip-scheduled-if-done t
               org-agenda-skip-deadline-if-done t
               org-agenda-skip-timestamp-if-done t))
 
 (setq org-roam-capture-templates
-      '(("d" "ideas" plain "%?"
+      '(("i" "ideas"  plain "%?"
          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                            "#+title: ${title}\n")
-         :unnarrowed t)
-        ("r" "references" plain "%?"
-         :if-new (file+head "reference/%<%Y%m%d%H%M%S>-${slug}.org"
-                            "#+title: ${title}\n#+author: \n#+type: \n#+source: \n")
-         :unnarrowed t)))
+                            "#+title: ${title}\n#+created: %U\n#+filetags; :ideas:")
+         :immediate-finish t)
+        ("r" "reflections"  plain "%?"
+         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n#+filetags; :reflections:")
+         :immediate-finish t)
+        ("j" "journal")
+        ("jd" "daily" plain "%?"
+         :if-new (file+head "${title}.org"
+                            "#+title: ${title}\n#+created: %U\n#+filetags: :journals:daily:")
+         :immediate-finish t)
+        ("jw" "weekly" plain "%?"
+         :if-new (file+head "${title}.org"
+                            "#+title: ${title}\n#+created: %U\n#+filetags: :journals:weekly:")
+         :immediate-finish t)
+        ("jq" "quarterly" plain "%?"
+         :if-new (file+head "${title}.org"
+                            "#+title: ${title}\n#+created: %U\n#+filetags: :journals:quarterly:")
+         :immediate-finish t)
+        ("jy" "yearly" plain "%?"
+         :if-new (file+head "${title}.org"
+                            "#+title: ${title}\n#+created: %U\n#+filetags: :journals:yearly:")
+         :immediate-finish t)
+        ("s" "source")
+        ("sa" "articles" plain "%?"
+         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n#+source: \n#+filetags: :sources:articles:")
+         :immediate-finish t)
+        ("sb" "books" plain "%?"
+         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n#+source: \n#+filetags: :sources:books:")
+         :immediate-finish t)
+        ("sv" "videos" plain "%?"
+         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n#+source: \n#+filetags: :sources:videos:")
+         :immediate-finish t)))
 (use-package! org-roam
               :ensure t
               :custom
               (org-roam-directory (file-truename "~/org/roam/"))
-              (org-roam-dailies-directory "dailies/")
+              (org-roam-dailies-directory "journal/daily/")
               :config
               (org-roam-db-autosync-mode)
               (map! :leader
                    (:prefix ("n" . nil)
-                    :desc "Org-roam capture"       "c" #'org-roam-capture
-                    :desc "Org-roam insert node"   "i" #'org-roam-node-insert
-                    :desc "Org-roam find node"     "f" #'org-roam-node-find
-                    :desc "Org-roam buffer toggle" "l" #'org-roam-buffer-toggle
-                    :desc "Org-roam UI"            "g" #'org-roam-ui-mode
-                    :desc "Today"                  "t" #'org-roam-dailies-goto-today
-                    :desc "Yesterday"              "y" #'org-roam-dailies-goto-yesterday
-                    :desc "Tomorrow"               "m" #'org-roam-dailies-goto-tomorrow)))
+                    :desc "Org roam capture"       "c" #'org-roam-capture
+                    :desc "Org roam insert node"   "i" #'org-roam-node-insert
+                    :desc "Org roam find node"     "f" #'org-roam-node-find
+                    :desc "Org roam buffer toggle" "l" #'org-roam-buffer-toggle
+                    :desc "Org roam UI"            "g" #'org-roam-ui-mode)))
 (use-package! org-roam-ui
               :after org-roam
               :hook (org-roam-mode . org-roam-ui-mode)
