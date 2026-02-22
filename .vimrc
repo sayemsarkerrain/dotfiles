@@ -1,38 +1,50 @@
+" Basic settings
 set nocompatible
 filetype plugin indent on
 syntax on
+set hidden
+set clipboard=unnamedplus
 
+" Line numbers, showcmd, wildmenu
 set number
 set relativenumber
 set showcmd 
 set wildmenu
 
+" Searching
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+
+" Split behaviour
+set splitbelow   
+set splitright
+
+" Wrapping and indentation
 set wrap
 set linebreak
 set breakindent
 set breakindentopt=shift:2,min:20
 set nolist
-
-set tabstop=2
-set shiftwidth=1
 set expandtab
 set smartindent
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+autocmd FileType * setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
-set hidden
-set clipboard=unnamedplus
-set splitbelow   
-set splitright
-set ignorecase
-set smartcase
-
+" Spell checker
 set spell
 set spelllang=en
 set spellsuggest=best,4
 
+" Leader and mapping
 let mapleader = " "
 set timeoutlen=300
 inoremap jk <Esc>
 
+" Plugins
 call plug#begin('~/.vim/plugged')
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -41,11 +53,12 @@ Plug 'vim-scripts/AutoComplPop'
 
 call plug#end()
 
+" fzf.vim configuration
 nnoremap <leader><leader> :Files<CR>
 nnoremap <leader>b        :Buffers<CR>
 nnoremap <leader><Enter>  :Rg<CR>
-let g:fzf_layout = { 'down': '40%' }  
 
+" AutoComplPop configuration
 set complete+=kspell
 set completeopt=menuone,longest
 set shortmess+=c
