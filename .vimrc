@@ -1,6 +1,6 @@
-#########
+" #########
 " keymaps
-#########
+" #########
 " Leader key 
 let mapleader = " "
 
@@ -25,9 +25,9 @@ nnoremap <leader>1 :e ~/.config/vim/keymaps.vim<CR>
 nnoremap <leader>2 :e ~/.config/vim/options.vim<CR>
 nnoremap <leader>3 :e ~/.config/vim/plugins.vim<CR>
 
-#########
+" #########
 " Options
-#########
+" #########
 " General 
 set nocompatible
 syntax on
@@ -74,9 +74,9 @@ set spellsuggest=best,4
 " Template
 autocmd BufNewFile *.md execute "normal! i---\ncreated: " . strftime("%Y-%m-%dT%H:%M") . "\n---\n"
 
-#########
+" #########
 " Plugins
-#########
+" #########
 " Plugins
 call plug#begin('~/.vim/plugged')
 
