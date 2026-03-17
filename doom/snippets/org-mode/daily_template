@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: Daily Template
+# key: dai
+# --
+
+* Intention
+- ${1:}
+
+* Action
+- [ ] ${2:}
+
+* Log
+** Wins
+** Losses
+** Next move
+- [ ]
