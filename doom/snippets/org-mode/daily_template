@@ -7,10 +7,10 @@
 - ${1:}
 
 * Action
-- [ ] ${2:}
+** TODO ${2:}
 
 * Log
 ** Wins
 ** Losses
 ** Next move
-- [ ]
+*** TODO

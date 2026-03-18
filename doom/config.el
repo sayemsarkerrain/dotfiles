@@ -53,13 +53,13 @@
 (after! org
         (setq org-capture-templates
               '(
-                ("n" "note" plain
-                 (file "~/org/refile.org")
-                 "%?")
                 ("t" "todo" entry
-                 (file+headline "~/org/refile.org" "Todo")
+                 (file "~/org/refile.org")
                  "* TODO %?")
-              )))
+                )))
+(after! org
+        (add-to-list 'org-todo-keywords
+                     '(sequence "NOTE(n)")))
 
 (after! org
         (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
@@ -69,7 +69,7 @@
 
 (setq org-roam-capture-templates
       '(("n" "note" plain "%?"
-         :if-new (file+head "${slug}.org"
+         :if-new (file+head "%<%Y%m%d%H%M%S>.org"
                             "#+title: ${title}\n#+created: %U\n")
          :immediate-finish t
          :unnarrowed t)))
