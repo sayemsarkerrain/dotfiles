@@ -101,9 +101,11 @@
 
 (setq ispell-program-name "hunspell")
 (setq ispell-local-dictionary "en_US")
-(setq ispell-personal-dictionary "~/.hunspell_en_US")
 
 (setq delete-by-moving-to-trash t)
+
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "xdg-open")
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
