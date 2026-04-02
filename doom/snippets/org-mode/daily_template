@@ -6,11 +6,10 @@
 * Intention
 - ${1:}
 
-* Action
-** TODO ${2:}
+* Priority
+- ${2:}
 
 * Log
 ** Wins
 ** Losses
 ** Next move
-*** TODO

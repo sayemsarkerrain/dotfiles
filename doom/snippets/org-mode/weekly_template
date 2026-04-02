@@ -14,12 +14,12 @@
 - ${3:}
 
 * Next move
-- [ ] ${4:Top 3 next week}
+- ${4:Top 3 next week}
 
 * Maintenance
 - [ ] Projects
 - [ ] Roam
-- [ ] Refile
+- [ ] Tasks
 - [ ] Email
 - [ ] Calendar
 - [ ] Desktop

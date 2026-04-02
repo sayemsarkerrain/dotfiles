@@ -51,15 +51,15 @@
       (:prefix ("o" . nil)
        :desc "Org capture" "c" #'org-capture))
 (after! org
-        (setq org-capture-templates
-              '(
-                ("t" "todo" entry
-                 (file "~/org/refile.org")
-                 "* TODO %?")
-                )))
-(after! org
         (add-to-list 'org-todo-keywords
                      '(sequence "NOTE(n)")))
+(after! org
+        (setq org-capture-templates
+              '(
+                ("t" "task" entry
+                 (file "~/org/tasks.org")
+                 "* TODO %?")
+                )))
 
 (after! org
         (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
@@ -76,7 +76,7 @@
 (use-package! org-roam
               :ensure t
               :custom
-              (org-roam-directory (file-truename "~/org/roam/"))
+              (org-roam-directory (file-truename "~/org/notes/"))
               :config
               (org-roam-db-autosync-mode)
               (map! :leader
@@ -100,7 +100,7 @@
 (add-to-list 'default-frame-alist '(alpha-background . 80))
 
 (setq ispell-program-name "hunspell")
-(setq ispell-local-dictionary "en_US")
+;; (setq ispell-local-dictionary "en_US")
 
 (setq delete-by-moving-to-trash t)
 
