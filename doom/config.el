@@ -23,7 +23,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
+(setq doom-font (font-spec :family "Fira Code" :size 14))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -35,7 +35,6 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-spacegrey)
-(setq doom-font (font-spec :family "Ubuntu Mono" :size 14))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -56,9 +55,12 @@
 (after! org
         (setq org-capture-templates
               '(
-                ("t" "task" entry
+                ("t" "tasks" entry
                  (file "~/org/tasks.org")
                  "* TODO %?")
+                ("i" "idea" entry
+                 (file "~/org/ideas.org")
+                 "* IDEA %?")
                 )))
 
 (after! org
@@ -69,14 +71,28 @@
 
 (setq org-roam-capture-templates
       '(("n" "note" plain "%?"
-         :if-new (file+head "${slug}.org"
+         :target (file+head "${slug}.org"
                             "#+title: ${title}\n#+created: %U\n")
-         :immediate-finish t
+         :unnarrowed t)
+
+        ("j" "journal")
+        ("jd" "day" plain "%?"
+         :target (file+head "journal/daily/${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n")
+         :unnarrowed t)
+        ("jw" "week" plain "%?"
+         :target (file+head "journal/weekly/${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n")
+         :unnarrowed t)
+
+        ("p" "project" plain "%?"
+         :target (file+head "projects/${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n")
          :unnarrowed t)))
 (use-package! org-roam
               :ensure t
               :custom
-              (org-roam-directory (file-truename "~/org/notes/"))
+              (org-roam-directory (file-truename "~/org/"))
               :config
               (org-roam-db-autosync-mode)
               (map! :leader
