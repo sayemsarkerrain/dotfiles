@@ -23,7 +23,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "Fira Code" :size 14))
+(setq doom-font (font-spec :family "Fira Code" :size 13))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -34,7 +34,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-spacegrey)
+(setq doom-theme 'doom-one)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -43,6 +43,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
+
+;; Org-mode configuration
 (setq org-directory "~/org/")
 (setq org-id-locations-file (expand-file-name ".orgids" "~/.config/emacs/.local/etc/org/"))
 (setq org-element-use-cache nil)
@@ -50,49 +52,33 @@
       (:prefix ("o" . nil)
        :desc "Org capture" "c" #'org-capture))
 (after! org
-        (add-to-list 'org-todo-keywords
-                     '(sequence "NOTE(n)")))
-(after! org
         (setq org-capture-templates
               '(
                 ("t" "tasks" entry
-                 (file "~/org/tasks.org")
+                 (file "~/org/refile.org")
                  "* TODO %?")
                 ("i" "idea" entry
-                 (file "~/org/ideas.org")
+                 (file "~/org/refile.org")
                  "* IDEA %?")
                 )))
 
+;; Org-agenda configuration
 (after! org
         (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
         (setq org-agenda-skip-scheduled-if-done t
               org-agenda-skip-deadline-if-done t
               org-agenda-skip-timestamp-if-done t))
 
+;; Org-roam configuration
 (setq org-roam-capture-templates
       '(("n" "note" plain "%?"
          :target (file+head "${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n")
-         :unnarrowed t)
-
-        ("j" "journal")
-        ("jd" "day" plain "%?"
-         :target (file+head "journal/daily/${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n")
-         :unnarrowed t)
-        ("jw" "week" plain "%?"
-         :target (file+head "journal/weekly/${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n")
-         :unnarrowed t)
-
-        ("p" "project" plain "%?"
-         :target (file+head "projects/${slug}.org"
                             "#+title: ${title}\n#+created: %U\n")
          :unnarrowed t)))
 (use-package! org-roam
               :ensure t
               :custom
-              (org-roam-directory (file-truename "~/org/"))
+              (org-roam-directory (file-truename "~/org/notes"))
               :config
               (org-roam-db-autosync-mode)
               (map! :leader
@@ -110,13 +96,18 @@
                     org-roam-ui-update-on-save t
                     org-roam-ui-open-on-start t))
 
+;; Misc.
 (setq evil-escape-key-sequence "jk")
 (setq evil-escape-delay 0.2)
 
 (add-to-list 'default-frame-alist '(alpha-background . 80))
 
 (setq ispell-program-name "hunspell")
-;; (setq ispell-local-dictionary "en_US")
+(setq ispell-local-dictionary "en_US")
+(setq ispell-local-dictionary-alist
+      '(("en_US"
+         "[A-Za-z]" "[^A-Za-z]" "[']" t
+         ("-d" "C:/Hunspell/dict/en_US") nil utf-8)))
 
 (setq delete-by-moving-to-trash t)
 

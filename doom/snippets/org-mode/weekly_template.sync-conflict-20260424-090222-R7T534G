@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: Weekly Template
+# key: wee
+# --
+
+* Review
+** Wins
+- ${1:}
+
+** Losses
+- ${2:}
+
+** Why?
+- ${3:}
+
+* Next move
+- ${4:Top 3 next week}
+
+* Maintenance
+- [ ] Projects
+- [ ] Roam
+- [ ] Tasks
+- [ ] Email
+- [ ] Calendar
+- [ ] Desktop
