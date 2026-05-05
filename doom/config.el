@@ -24,7 +24,7 @@
 ;; accept. For example:
 ;;
 (setq doom-font (font-spec :family "Fira Code" :size 13))
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+;;    doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -35,6 +35,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
+;;(setq doom-theme 'doom-one-light)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -43,42 +44,57 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-
-;; Org-mode configuration
 (setq org-directory "~/org/")
 (setq org-id-locations-file (expand-file-name ".orgids" "~/.config/emacs/.local/etc/org/"))
 (setq org-element-use-cache nil)
+(after! org
+  (setq! org-todo-keywords
+        '((sequence
+           "TODO(t)" "PROJ(p)" "LOOP(l)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "NOTE(n)"
+           "|"
+           "DONE(d)" "KILL" "ARCH(a)" "PROC(P)"))))
 (map! :leader
       (:prefix ("o" . nil)
        :desc "Org capture" "c" #'org-capture))
+(setq org-blank-before-new-entry
+      '((heading . nil)
+        (plain-list-item . nil)))
 (after! org
         (setq org-capture-templates
               '(
-                ("t" "tasks" entry
-                 (file "~/org/refile.org")
+                ("t" "todo" entry
+                 (file+headline "~/org/todos.org" "Todos")
                  "* TODO %?")
                 ("i" "idea" entry
-                 (file "~/org/refile.org")
-                 "* IDEA %?")
-                )))
+                 (file+headline "~/org/ideas.org" "Ideas")
+                 "* IDEA %? :ideas:")
+                ("n" "note" entry
+                 (file+headline "~/org/notes.org" "Notes")
+                 "* NOTE %? :notes:"
+                ))))
 
-;; Org-agenda configuration
 (after! org
         (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
         (setq org-agenda-skip-scheduled-if-done t
               org-agenda-skip-deadline-if-done t
               org-agenda-skip-timestamp-if-done t))
 
-;; Org-roam configuration
 (setq org-roam-capture-templates
-      '(("n" "note" plain "%?"
-         :target (file+head "${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n")
-         :unnarrowed t)))
+      '(("j" "journal")
+        ("jd" "day" plain "%?"
+         :target (file+head "journal/daily/${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n"))
+
+        ("n" "note" plain "%?"
+         :target (file+head "notes/${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n"))
+        ("p" "project" plain "* PROJ %?"
+         :target (file+head "projects/${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n\n"))))
 (use-package! org-roam
               :ensure t
               :custom
-              (org-roam-directory (file-truename "~/org/notes"))
+              (org-roam-directory (file-truename "~/org/"))
               :config
               (org-roam-db-autosync-mode)
               (map! :leader
@@ -96,20 +112,17 @@
                     org-roam-ui-update-on-save t
                     org-roam-ui-open-on-start t))
 
-;; Misc.
 (setq evil-escape-key-sequence "jk")
 (setq evil-escape-delay 0.2)
 
-(add-to-list 'default-frame-alist '(alpha-background . 80))
+(setq delete-by-moving-to-trash t)
+
+;;(add-to-list 'default-frame-alist '(alpha-background . 80))
 
 (setq ispell-program-name "hunspell")
+(setq ispell-hunspell-dict-paths-alist
+      '(("en_US" "C:/Hunspell/dict/en_US.aff")))
 (setq ispell-local-dictionary "en_US")
-(setq ispell-local-dictionary-alist
-      '(("en_US"
-         "[A-Za-z]" "[^A-Za-z]" "[']" t
-         ("-d" "C:/Hunspell/dict/en_US") nil utf-8)))
-
-(setq delete-by-moving-to-trash t)
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "xdg-open")
