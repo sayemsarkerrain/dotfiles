@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Cognition tracker
+# key: cog
+# --
+
+- ${1:(date)}
+  - Cognitive Mode (Proactive vs. Reactive)
+  - Convergent Focus
+  - Divergent constraint
+  - Cognitive Trigger
+  - Energy Flow (Flow vs. Tension)

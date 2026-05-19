@@ -39,7 +39,6 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
 (setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
@@ -62,14 +61,14 @@
 (after! org
         (setq org-capture-templates
               '(
-                ("t" "todo" entry
-                 (file+headline "~/org/todos.org" "Todos")
+                ("t" "tasks" entry
+                 (file "~/org/notes/tasks.org")
                  "* TODO %?")
                 ("i" "idea" entry
-                 (file+headline "~/org/ideas.org" "Ideas")
+                 (file "~/org/notes/ideas.org")
                  "* IDEA %? :ideas:")
                 ("n" "note" entry
-                 (file+headline "~/org/notes.org" "Notes")
+                 (file "~/org/notes/notes.org")
                  "* NOTE %? :notes:"
                 ))))
 
@@ -80,19 +79,20 @@
               org-agenda-skip-timestamp-if-done t))
 
 (setq org-roam-capture-templates
-      '(("j" "journal")
-        ("jd" "day" plain "%?"
-         :target (file+head "journal/daily/${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n"))
-
-        ("n" "note" plain "%?"
-         :target (file+head "notes/${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n"))
-        ("p" "project" plain "* PROJ %?"
-         :target (file+head "projects/${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n\n"))))
+        '(("n" "note" plain "%?"
+           :target (file+head "notes/${slug}.org"
+                              "#+title: ${title}\n#+created: %U\n")
+           :unnarrowed t)
+          ("j" "journal")
+          ("jd" "day" plain "%?"
+           :target (file+head "journal/daily/${slug}.org"
+                              "#+title: ${title}\n#+created: %U\n")
+           :unnarrowed t)
+          ("p" "project" plain "%?"
+           :target (file+head "projects/${slug}.org"
+                              "#+title: ${title}\n#+created: %U\n\n* PROJ ${title}\n")
+           :unnarrowed t)))
 (use-package! org-roam
-              :ensure t
               :custom
               (org-roam-directory (file-truename "~/org/"))
               :config
@@ -126,6 +126,7 @@
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "xdg-open")
+(setq browse-url-browser-function 'browse-url-default-browser)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
