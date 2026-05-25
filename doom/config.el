@@ -62,14 +62,14 @@
         (setq org-capture-templates
               '(
                 ("t" "tasks" entry
-                 (file "~/org/notes/tasks.org")
+                 (file "~/org/tasks.org")
                  "* TODO %?")
                 ("i" "idea" entry
-                 (file "~/org/notes/ideas.org")
+                 (file "~/org/ideas.org")
                  "* IDEA %? :ideas:")
                 ("n" "note" entry
-                 (file "~/org/notes/notes.org")
-                 "* NOTE %? :notes:"
+                 (file "~/org/notes.org")
+                 "* NOTE %?"
                 ))))
 
 (after! org
@@ -77,40 +77,6 @@
         (setq org-agenda-skip-scheduled-if-done t
               org-agenda-skip-deadline-if-done t
               org-agenda-skip-timestamp-if-done t))
-
-(setq org-roam-capture-templates
-        '(("n" "note" plain "%?"
-           :target (file+head "notes/${slug}.org"
-                              "#+title: ${title}\n#+created: %U\n")
-           :unnarrowed t)
-          ("j" "journal")
-          ("jd" "day" plain "%?"
-           :target (file+head "journal/daily/${slug}.org"
-                              "#+title: ${title}\n#+created: %U\n")
-           :unnarrowed t)
-          ("p" "project" plain "%?"
-           :target (file+head "projects/${slug}.org"
-                              "#+title: ${title}\n#+created: %U\n\n* PROJ ${title}\n")
-           :unnarrowed t)))
-(use-package! org-roam
-              :custom
-              (org-roam-directory (file-truename "~/org/"))
-              :config
-              (org-roam-db-autosync-mode)
-              (map! :leader
-                   (:prefix ("n" . nil)
-                    :desc "Org roam capture"       "c" #'org-roam-capture
-                    :desc "Org roam insert node"   "i" #'org-roam-node-insert
-                    :desc "Org roam find node"     "f" #'org-roam-node-find
-                    :desc "Org roam UI"            "g" #'org-roam-ui-mode)))
-(use-package! org-roam-ui
-              :after org-roam
-              :hook (org-roam-mode . org-roam-ui-mode)
-              :config
-              (setq org-roam-ui-sync-theme t
-                    org-roam-ui-follow t
-                    org-roam-ui-update-on-save t
-                    org-roam-ui-open-on-start t))
 
 (setq evil-escape-key-sequence "jk")
 (setq evil-escape-delay 0.2)
@@ -123,10 +89,6 @@
 (setq ispell-hunspell-dict-paths-alist
       '(("en_US" "C:/Hunspell/dict/en_US.aff")))
 (setq ispell-local-dictionary "en_US")
-
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "xdg-open")
-(setq browse-url-browser-function 'browse-url-default-browser)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
