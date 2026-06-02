@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: Project Template
+# key: pt
+# --
+
+:PROPERTIES:
+:status:
+:priority:
+:END:
+
+# status: Not started, Planning, On hold, In progress, Review, Complete
+# priority: High, Medium, Low
