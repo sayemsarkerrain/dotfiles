@@ -8,6 +8,33 @@
 ;;(setq doom-font (font-spec :family "Fira Code" :size 13))
 (setq doom-font (font-spec :family "Hack" :size 13))
 
+(use-package! org-roam
+              :custom
+              (org-roam-directory (file-truename "~/org/"))
+              :config
+              (org-roam-db-autosync-mode)
+              (map! :leader
+                   (:prefix ("n" . nil)
+                    :desc "Org roam capture"       "c" #'org-roam-capture
+                    :desc "Org roam insert node"   "i" #'org-roam-node-insert
+                    :desc "Org roam find node"     "f" #'org-roam-node-find
+                    :desc "Org roam UI"            "g" #'org-roam-ui-mode)))
+
+(setq org-roam-capture-templates
+      '(("n" "note" plain "%?"
+         :target (file+head "${slug}.org"
+                            "#+title: ${title}\n#+created: %U\n")
+         :unnarrowed t)))
+
+(use-package! org-roam-ui
+              :after org-roam
+              :hook (org-roam-mode . org-roam-ui-mode)
+              :config
+              (setq org-roam-ui-sync-theme t
+                   org-roam-ui-follow t
+                    org-roam-ui-update-on-save t
+                    org-roam-ui-open-on-start t))
+
 (setq org-agenda-files
       (directory-files-recursively "~/org/" "\\.org$"))
 
@@ -42,21 +69,22 @@
            (file+olp+datetree "~/org/journal.org")
            "* %U %? :observations:\n"))))
 
-(setq org-todo-keywords
-      '((sequence
-         "TODO(t)"
-         "PROJ(p)"
-         "LOOP(l)"
-         "STRT(s)"
-         "WAIT(w)"
-         "HOLD(h)"
-         "IDEA(i)"
-         "NOTE(n)"
-         "|"
-         "DONE(d)"
-         "KILL(k)"
-         "ARCH(a)"
-         "PROC(P)")))
+(after! org
+  (setq org-todo-keywords
+        '((sequence
+           "TODO(t)"
+           "PROJ(p)"
+           "LOOP(l)"
+           "STRT(s)"
+           "WAIT(w)"
+           "HOLD(h)"
+           "IDEA(i)"
+           "NOTE(n)"
+           "|"
+           "DONE(d)"
+           "KILL(k)"
+           "ARCH(a)"
+           "PROC(P)"))))
 
 (setq evil-escape-key-sequence "jk")
 (setq evil-escape-delay 0.2)
@@ -72,4 +100,4 @@
 
 (setq confirm-kill-emacs nil)
 
-(setq initial-buffer-choice "~/org/projects/")
+(setq initial-buffer-choice "~/org/")
