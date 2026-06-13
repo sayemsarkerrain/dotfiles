@@ -67,15 +67,15 @@
         '(
           ("t" "tasks" entry
            (file "~/org/tasks.org")
-           "* TODO %U %? :todos:\n")
+           "* TODO %U %? :todos:")
 
           ("i" "ideas" entry
            (file "~/org/ideas.org")
-           "* IDEA %U %? :ideas:\n")
+           "* IDEA %U %? :ideas:")
 
           ("n" "notes" entry
            (file "~/org/notes.org")
-           "* NOTE %U %? :notes:\n"))))
+           "* NOTE %U %? :notes:"))))
 
 ;;          ("j" "journal")
 ;;          ("jr" "reflections" entry
@@ -83,7 +83,7 @@
 ;;           "* %U Reflection %? :reflections:\n")
 ;;          ("jo" "observations" entry
 ;;           (file+olp+datetree "~/org/journal.org")
-;;           "* %U %? :observations:\n")
+;;           "* %U %? :observations:")
 
 (after! org
   (setq org-todo-keywords
