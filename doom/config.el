@@ -14,17 +14,29 @@
               :config
               (org-roam-db-autosync-mode)
               (map! :leader
-                   (:prefix ("n" . nil)
-                    :desc "Org roam capture"       "c" #'org-roam-capture
-                    :desc "Org roam insert node"   "i" #'org-roam-node-insert
-                    :desc "Org roam find node"     "f" #'org-roam-node-find
-                    :desc "Org roam UI"            "g" #'org-roam-ui-mode)))
+                   (:prefix ("r" . nil)
+                    :desc "Org roam capture"                "c"   #'org-roam-capture
+                    :desc "Org roam insert node"            "i"  #'org-roam-node-insert
+                    :desc "Org roam find node"              "f"  #'org-roam-node-find
+                    :desc "Org roam UI"                     "g"  #'org-roam-ui-mode
+                    :desc "Org roan dailies goto today"     "t" #'org-roam-dailies-capture-today
+                    :desc "Org roam dailies goto tomorrow"  "T" #'org-roam-dailies-goto-tomorrow
+                    :desc "Org roam dailies goto yesterday" "y" #'org-roam-dailies-goto-yesterday)))
+(use-package org-roam-dailies
+             :after org-roam
+             :config
+             (setq org-roam-dailies-directory "roam/dailies/"))
 
 (setq org-roam-capture-templates
       '(("n" "note" plain "%?"
          :target (file+head "${slug}.org"
-                            "#+title: ${title}\n#+created: %U\n")
+                            "#+title: ${title}\n#+created: %U\n#+filetags: \n")
          :unnarrowed t)))
+
+(setq org-roam-dailies-capture-templates
+      '(("d" "dailies" entry "* %U %?"
+         :target (file+head "%<%Y-%m-%d>.org"
+                            "#+title: %<%Y-%m-%d>\n"))))
 
 (use-package! org-roam-ui
               :after org-roam
@@ -61,13 +73,17 @@
            (file "~/org/ideas.org")
            "* IDEA %U %? :ideas:\n")
 
-          ("j" "journal")
-          ("jr" "reflections" entry
-           (file+olp+datetree "~/org/journal.org")
-           "* %U Reflection %? :reflections:\n")
-          ("jo" "observations" entry
-           (file+olp+datetree "~/org/journal.org")
-           "* %U %? :observations:\n"))))
+          ("n" "notes" entry
+           (file "~/org/notes.org")
+           "* NOTE %U %? :notes:\n"))))
+
+;;          ("j" "journal")
+;;          ("jr" "reflections" entry
+;;           (file+olp+datetree "~/org/journal.org")
+;;           "* %U Reflection %? :reflections:\n")
+;;          ("jo" "observations" entry
+;;           (file+olp+datetree "~/org/journal.org")
+;;           "* %U %? :observations:\n")
 
 (after! org
   (setq org-todo-keywords
