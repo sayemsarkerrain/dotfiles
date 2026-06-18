@@ -29,12 +29,12 @@
 
 (setq org-roam-capture-templates
       '(("n" "note" plain "%?"
-         :target (file+head "${slug}.org"
+         :target (file+head "roam/${slug}.org"
                             "#+title: ${title}\n#+created: %U\n#+filetags: \n")
          :unnarrowed t)))
 
 (setq org-roam-dailies-capture-templates
-      '(("d" "dailies" entry "* %U %?"
+      '(("d" "dailies" entry "* %?"
          :target (file+head "%<%Y-%m-%d>.org"
                             "#+title: %<%Y-%m-%d>\n"))))
 
@@ -117,3 +117,6 @@
 (setq confirm-kill-emacs nil)
 
 (setq initial-buffer-choice "~/org/")
+
+(after! org
+  (setq org-cycle-hide-drawer-startup nil))
