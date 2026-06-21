@@ -29,14 +29,14 @@
 
 (setq org-roam-capture-templates
       '(("n" "note" plain "%?"
-         :target (file+head "roam/${slug}.org"
+         :target (file+head "roam/%<%Y%m%d%H%M%S>.org"
                             "#+title: ${title}\n#+created: %U\n#+filetags: \n")
          :unnarrowed t)))
 
-(setq org-roam-dailies-capture-templates
-      '(("d" "dailies" entry "* %?"
-         :target (file+head "%<%Y-%m-%d>.org"
-                            "#+title: %<%Y-%m-%d>\n"))))
+;;(setq org-roam-dailies-capture-templates
+;;      '(("d" "dailies" entry "* %?"
+;;         :target (file+head "%<%Y-%m-%d>.org"
+;;                            "#+title: %<%Y-%m-%d>\n"))))
 
 (use-package! org-roam-ui
               :after org-roam
@@ -67,15 +67,15 @@
         '(
           ("t" "tasks" entry
            (file "~/org/tasks.org")
-           "* TODO %U %? :todos:")
+           "* TODO %?\n:PROPERTIES:\n:date: %U\n:END:\n")
 
           ("i" "ideas" entry
            (file "~/org/ideas.org")
-           "* IDEA %U %? :ideas:")
+           "* IDEA %?")
 
           ("n" "notes" entry
            (file "~/org/notes.org")
-           "* NOTE %U %? :notes:"))))
+           "* NOTE %?"))))
 
 ;;          ("j" "journal")
 ;;          ("jr" "reflections" entry
@@ -120,3 +120,5 @@
 
 (after! org
   (setq org-cycle-hide-drawer-startup nil))
+
+(map! :n "t g" #'centaur-tabs-backward)
