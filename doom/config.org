@@ -62,6 +62,15 @@
 ;;                            "#+title: %<%Y-%m-%d>\n"))))
 #+end_src
 
+#+RESULTS:
+| n | note | plain | %? | :target | (file+head roam/%<%Y%m%d%H%M%S>.org #+title: ${title} |
+#+created: %U
+#+filetags:
+) |:unnarrowed |t |
+#+created: %U
+#+filetags:
+) |:unnarrowed |t |
+
 *** Org roam ui
 #+begin_src emacs-lisp
 (use-package! org-roam-ui
@@ -109,7 +118,7 @@
         '(
           ("t" "tasks" entry
            (file "~/org/tasks.org")
-           "* TODO %?\n:PROPERTIES:\n:date: %U\n:END:\n")
+           "* TODO %?\n:PROPERTIES:\n:date: %U\n:END:")
 
           ("i" "ideas" entry
            (file "~/org/ideas.org")

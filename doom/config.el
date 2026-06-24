@@ -67,7 +67,7 @@
         '(
           ("t" "tasks" entry
            (file "~/org/tasks.org")
-           "* TODO %?\n:PROPERTIES:\n:date: %U\n:END:\n")
+           "* TODO %?\n:PROPERTIES:\n:date: %U\n:END:")
 
           ("i" "ideas" entry
            (file "~/org/ideas.org")
