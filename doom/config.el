@@ -1,4 +1,4 @@
-(setq org-directory "~/org/")
+
 
 (setq display-line-numbers-type 'relative)
 
