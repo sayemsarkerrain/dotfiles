@@ -1,0 +1,7 @@
+ff 'find-file $1'
+alias j find-file ~/org/journal.org
+alias t find-file ~/org/tasks.org
+alias i find-file ~/org/ideas.org
+alias cc find-file ~/.config/doom/config.org
+alias ci find-file ~/.config/doom/init.el
+alias cp find-file ~/.config/doom/packages.el
