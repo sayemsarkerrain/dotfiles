@@ -8,6 +8,101 @@
 ;;(setq doom-font (font-spec :family "Fira Code" :size 13))
 (setq doom-font (font-spec :family "Hack" :size 13))
 
+(after! doom
+  (map! :leader
+        "o" nil))
+(after! doom
+  (map! :leader
+        (:prefix ("o" . "Org")
+         (:prefix ("m" . "Mode")
+          ;; Folding
+          "TAB"     #'org-cycle
+          "a"       #'org-shifttab
+
+          ;; Headings
+          "h"       #'org-meta-return
+          "H"       #'org-insert-todo-heading
+
+          ;; TODOs
+          "t"       #'org-todo
+
+          ;; Structure
+          "<left>"  #'org-metaleft
+          "<right>" #'org-metaright
+          "<up>"    #'org-metaup
+          "<down>"  #'org-metadown
+
+          ;; Dates
+          "s"       #'org-schedule
+          "d"       #'org-deadline
+          "."       #'org-time-stamp
+
+          ;; Links
+          "l"       #'org-insert-link
+          "o"       #'org-open-at-point
+
+          ;; Tags
+          "q"       #'org-set-tags-command
+
+          ;; Archive
+          "x"       #'org-archive-subtree
+
+          ;; Context-sensitive
+          "c"       #'org-ctrl-c-ctrl-c
+
+          ;; Export
+          "e"       #'org-export-dispatch
+
+          ;; Source blocks
+          "'"       #'org-edit-special
+
+          ;; Narrowing
+          "n"       #'org-narrow-to-subtree
+          "w"       #'widen))))
+
+(map! :leader
+      :desc "org-capture" "c" #'org-capture)
+
+(after! org
+  (setq org-capture-templates
+        '(
+          ("t" "tasks" entry
+           (file "~/org/tasks.org")
+           "* TODO %? :todos:\n:PROPERTIES:\n:created: %U\n:END:\n")
+          ("n" "notes" entry
+           (file "~/org/notes.org")
+           "* NOTE %? :notes:\n:PROPERTIES:\n:created: %U\n:END:\n")
+          ("i" "ideas" entry
+           (file "~/org/ideas.org")
+           "* IDEA %? :ideas:\n:PROPERTIES:\n:created: %U\n:END:\n"))))
+
+;;          ("j" "journal")
+;;          ("jr" "reflections" entry
+;;           (file+olp+datetree "~/org/journal.org")
+;;           "* %U Reflection %? :reflections:\n")
+;;          ("jo" "observations" entry
+;;           (file+olp+datetree "~/org/journal.org")
+;;           "* %U %? :observations:\n")
+
+(after! org
+  (setq org-todo-keywords
+        '((sequence "PROJ(p)" "PLAN(l)" "PROG(g)" "WAIT(w)" "HOLD(h)" "|" "COMP(m)" "CANC(c)")
+          (sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "|" "DONE(d)" "KILL(k)")
+          (sequence "NOTE(n)" "STRT(s)" "WAIT(w)" "HOLD(h)" "|" "ARCH(a)" "KILL(k)")
+          (sequence "IDEA(i)" "STRT(s)" "WAIT(w)" "HOLD(h)" "|" "PROC(r)" "KILL(k)"))))
+
+(setq org-agenda-files
+      (directory-files-recursively "~/org/" "\\.org$"))
+
+(setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t)
+
+(map! :leader
+      :desc "org-agenda" "a" #'org-agenda)
+
+(setq org-agenda-sorting-strategy
+      '((tags tag-up)))
+
 (use-package! org-roam
               :custom
               (org-roam-directory (file-truename "~/org/"))
@@ -46,61 +141,6 @@
                    org-roam-ui-follow t
                     org-roam-ui-update-on-save t
                     org-roam-ui-open-on-start t))
-
-(setq org-agenda-files
-      (directory-files-recursively "~/org/" "\\.org$"))
-
-(setq org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-deadline-if-done t)
-
-(map! :leader
-      :desc "org-agenda" "a" #'org-agenda)
-
-(setq org-agenda-sorting-strategy
-      '((tags tag-up)))
-
-(map! :leader
-      :desc "org-capture" "c" #'org-capture)
-
-(after! org
-  (setq org-capture-templates
-        '(
-          ("t" "tasks" entry
-           (file "~/org/tasks.org")
-           "* TODO %U %? :todos:")
-
-          ("i" "ideas" entry
-           (file "~/org/ideas.org")
-           "* IDEA %U %? :ideas:")
-
-          ("n" "notes" entry
-           (file "~/org/notes.org")
-           "* NOTE %U %? :notes:"))))
-
-;;          ("j" "journal")
-;;          ("jr" "reflections" entry
-;;           (file+olp+datetree "~/org/journal.org")
-;;           "* %U Reflection %? :reflections:\n")
-;;          ("jo" "observations" entry
-;;           (file+olp+datetree "~/org/journal.org")
-;;           "* %U %? :observations:")
-
-(after! org
-  (setq org-todo-keywords
-        '((sequence
-           "TODO(t)"
-           "PROJ(p)"
-           "LOOP(l)"
-           "STRT(s)"
-           "WAIT(w)"
-           "HOLD(h)"
-           "IDEA(i)"
-           "NOTE(n)"
-           "|"
-           "DONE(d)"
-           "KILL(k)"
-           "ARCH(a)"
-           "PROC(P)"))))
 
 (setq evil-escape-key-sequence "jk")
 (setq evil-escape-delay 0.2)

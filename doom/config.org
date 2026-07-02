@@ -25,6 +25,123 @@
 #+end_src
 
 * Org
+** Keybindings
+#+begin_src emacs-lisp
+(after! doom
+  (map! :leader
+        "o" nil))
+(after! doom
+  (map! :leader
+        (:prefix ("o" . "Org")
+         (:prefix ("m" . "Mode")
+          ;; Folding
+          "TAB"     #'org-cycle
+          "a"       #'org-shifttab
+
+          ;; Headings
+          "h"       #'org-meta-return
+          "H"       #'org-insert-todo-heading
+
+          ;; TODOs
+          "t"       #'org-todo
+
+          ;; Structure
+          "<left>"  #'org-metaleft
+          "<right>" #'org-metaright
+          "<up>"    #'org-metaup
+          "<down>"  #'org-metadown
+
+          ;; Dates
+          "s"       #'org-schedule
+          "d"       #'org-deadline
+          "."       #'org-time-stamp
+
+          ;; Links
+          "l"       #'org-insert-link
+          "o"       #'org-open-at-point
+
+          ;; Tags
+          "q"       #'org-set-tags-command
+
+          ;; Archive
+          "x"       #'org-archive-subtree
+
+          ;; Context-sensitive
+          "c"       #'org-ctrl-c-ctrl-c
+
+          ;; Export
+          "e"       #'org-export-dispatch
+
+          ;; Source blocks
+          "'"       #'org-edit-special
+
+          ;; Narrowing
+          "n"       #'org-narrow-to-subtree
+          "w"       #'widen))))
+#+end_src
+
+** Org capture
+*** Keybindings
+#+begin_src emacs-lisp
+(map! :leader
+      :desc "org-capture" "c" #'org-capture)
+#+end_src
+
+*** Templates
+#+begin_src emacs-lisp
+(after! org
+  (setq org-capture-templates
+        '(
+          ("t" "tasks" entry
+           (file "~/org/tasks.org")
+           "* TODO %? :todos:\n:PROPERTIES:\n:created: %U\n:END:\n")
+          ("n" "notes" entry
+           (file "~/org/notes.org")
+           "* NOTE %? :notes:\n:PROPERTIES:\n:created: %U\n:END:\n")
+          ("i" "ideas" entry
+           (file "~/org/ideas.org")
+           "* IDEA %? :ideas:\n:PROPERTIES:\n:created: %U\n:END:\n"))))
+
+;;          ("j" "journal")
+;;          ("jr" "reflections" entry
+;;           (file+olp+datetree "~/org/journal.org")
+;;           "* %U Reflection %? :reflections:\n")
+;;          ("jo" "observations" entry
+;;           (file+olp+datetree "~/org/journal.org")
+;;           "* %U %? :observations:\n")
+#+end_src
+
+** Org todo keywords
+#+begin_src emacs-lisp
+(after! org
+  (setq org-todo-keywords
+        '((sequence "PROJ(p)" "PLAN(l)" "PROG(g)" "WAIT(w)" "HOLD(h)" "|" "COMP(m)" "CANC(c)")
+          (sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "|" "DONE(d)" "KILL(k)")
+          (sequence "NOTE(n)" "STRT(s)" "WAIT(w)" "HOLD(h)" "|" "ARCH(a)" "KILL(k)")
+          (sequence "IDEA(i)" "STRT(s)" "WAIT(w)" "HOLD(h)" "|" "PROC(r)" "KILL(k)"))))
+#+end_src
+
+** Org agenda
+*** Configuration
+#+begin_src emacs-lisp
+(setq org-agenda-files
+      (directory-files-recursively "~/org/" "\\.org$"))
+
+(setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t)
+#+end_src
+
+*** Keybindings
+#+begin_src emacs-lisp
+(map! :leader
+      :desc "org-agenda" "a" #'org-agenda)
+#+end_src
+*** Sort
+#+begin_src emacs-lisp
+(setq org-agenda-sorting-strategy
+      '((tags tag-up)))
+#+end_src
+
 ** Org roam
 *** Configuration
 #+begin_src emacs-lisp
@@ -74,79 +191,6 @@
                     org-roam-ui-open-on-start t))
 #+end_src
 
-** Org agenda
-*** Configuration
-#+begin_src emacs-lisp
-(setq org-agenda-files
-      (directory-files-recursively "~/org/" "\\.org$"))
-
-(setq org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-deadline-if-done t)
-#+end_src
-
-*** Keybindings
-#+begin_src emacs-lisp
-(map! :leader
-      :desc "org-agenda" "a" #'org-agenda)
-#+end_src
-*** Sort
-#+begin_src emacs-lisp
-(setq org-agenda-sorting-strategy
-      '((tags tag-up)))
-#+end_src
-
-** Org capture
-*** Keybindings
-#+begin_src emacs-lisp
-(map! :leader
-      :desc "org-capture" "c" #'org-capture)
-#+end_src
-
-*** Templates
-#+begin_src emacs-lisp
-(after! org
-  (setq org-capture-templates
-        '(
-          ("t" "tasks" entry
-           (file "~/org/tasks.org")
-           "* TODO %U %? :todos:")
-
-          ("i" "ideas" entry
-           (file "~/org/ideas.org")
-           "* IDEA %U %? :ideas:")
-
-          ("n" "notes" entry
-           (file "~/org/notes.org")
-           "* NOTE %U %? :notes:"))))
-
-;;          ("j" "journal")
-;;          ("jr" "reflections" entry
-;;           (file+olp+datetree "~/org/journal.org")
-;;           "* %U Reflection %? :reflections:\n")
-;;          ("jo" "observations" entry
-;;           (file+olp+datetree "~/org/journal.org")
-;;           "* %U %? :observations:")
-#+end_src
-
-** Org todo keywords
-#+begin_src emacs-lisp
-(after! org
-  (setq org-todo-keywords
-        '((sequence
-           "TODO(t)"
-           "PROJ(p)"
-           "LOOP(l)"
-           "STRT(s)"
-           "WAIT(w)"
-           "HOLD(h)"
-           "IDEA(i)"
-           "NOTE(n)"
-           "|"
-           "DONE(d)"
-           "KILL(k)"
-           "ARCH(a)"
-           "PROC(P)"))))
-#+end_src
 * Misc.
 ** Vim bindings
 #+begin_src emacs-lisp
